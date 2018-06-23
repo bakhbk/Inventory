@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Inventory</string>
+
+    <!--Strings for activity_editor.xml-->
+    <string name="editor_activity_title_new_book">Add a Book</string>
+    <string name="product_name">Product name</string>
+    <string name="product_name_example_text">Adam Smith - The Wealth of Nations</string>
+    <string name="price">Price $</string>
+    <string name="price_example">10</string>
+    <string name="quantity">Quantity pcs.</string>
+    <string name="quantity_example">1</string>
+    <string name="supplier_name">Supplier Name</string>
+    <string name="supplier_name_example">Banderas</string>
+    <string name="supplier_phone_number">Supplier Phone Number</string>
+    <string name="supplier_phone_number_example">+18881002030</string>
+
+    <!--Strings for menu_inventory.xml-->
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+    <string name="action_delete_all_entries">Delete All Pets</string>
+
+    <!--Strings for menu_editor.xml-->
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
+
+</resources>

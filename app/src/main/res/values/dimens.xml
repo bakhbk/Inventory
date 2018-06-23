@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding_inventory_activity">16dp</dimen>
+    <dimen name="margin_fab">16dp</dimen>
+    <dimen name="padding_activity_editor">16dp</dimen>
+</resources>
