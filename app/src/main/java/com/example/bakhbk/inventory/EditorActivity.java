@@ -1,5 +1,6 @@
 package com.example.bakhbk.inventory;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
 import android.content.ContentValues;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import com.example.bakhbk.inventory.data.InventoryContract.InventoryEntry;
 
@@ -45,6 +47,12 @@ public class EditorActivity extends AppCompatActivity
   // EditText field to enter the book's supplier phone number
   private EditText mPhoneNumberEditText;
 
+  private ImageButton mIncrementButton;
+
+  private ImageButton mDecrementButton;
+
+  private int mQuantity;
+
   /**
    * Boolean flag that keeps track of whether the book has been edited (true) or
    * not (false)
@@ -66,7 +74,7 @@ public class EditorActivity extends AppCompatActivity
     }
   };
 
-  @Override
+  @SuppressLint("ClickableViewAccessibility") @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_editor);
@@ -94,12 +102,14 @@ public class EditorActivity extends AppCompatActivity
       getLoaderManager().initLoader(EXISTING_BOOK_LOADER, null, this);
     }
 
-    // Find all relevant views that we will need to read user input from
+    /** Find all relevant views that we will need to read user input from*/
     mProductNameEditText = findViewById(R.id.edit_product_name);
     mPriceEditText = findViewById(R.id.edit_price);
     mQuantityEditText = findViewById(R.id.edit_quantity);
     mSupplierNameEditText = findViewById(R.id.edit_supplier_name);
     mPhoneNumberEditText = findViewById(R.id.edit_supplier_phone_number);
+    mDecrementButton = findViewById(R.id.decrement);
+    mIncrementButton = findViewById(R.id.increment);
 
     /**Setup OnTouchListeners on all the input fields, so we can determine if the user
      * has touched or modified them. This will let us know if there are unsaved changes
@@ -109,6 +119,40 @@ public class EditorActivity extends AppCompatActivity
     mQuantityEditText.setOnTouchListener(mTouchListener);
     mSupplierNameEditText.setOnTouchListener(mTouchListener);
     mPhoneNumberEditText.setOnTouchListener(mTouchListener);
+    mDecrementButton.setOnTouchListener(mTouchListener);
+    mIncrementButton.setOnTouchListener(mTouchListener);
+
+    mIncrementButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        incrementImageButton(v);
+      }
+    });
+
+    mDecrementButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        decrementImageButton(v);
+      }
+    });
+  }
+
+  public void displayQuantity() {
+    mQuantityEditText.setText(String.valueOf(mQuantity));
+  }
+
+  public void incrementImageButton(View view) {
+    mQuantity++;
+    displayQuantity();
+  }
+
+  public void decrementImageButton(View view) {
+    if (mQuantity == 0) {
+      Toast.makeText(this, "Can't decrease quantity", Toast.LENGTH_SHORT).show();
+    } else {
+      mQuantity--;
+      displayQuantity();
+    }
   }
 
   /** Get user input from editor and save new book into database. */
@@ -264,6 +308,12 @@ public class EditorActivity extends AppCompatActivity
         // Pop up confirmation dialog for deletion
         showDeleteConfirmationDialog();
         return true;
+
+      // Respond to a click on the "Order more" menu option
+      case R.id.special_order:
+        specialOrder();
+        return true;
+
       /**Respond to a click on the "Up" arrow button in the app bar*/
       case android.R.id.home:
         /**Navigate back to parent activity (EditorActivity - this)*/
@@ -289,6 +339,26 @@ public class EditorActivity extends AppCompatActivity
         return true;
     }
     return super.onOptionsItemSelected(item);
+  }
+
+  public void specialOrder() {
+    Intent intent = new Intent(android.content.Intent.ACTION_SENDTO);
+    intent.setType(getString(R.string.special_order_for_text_plain));
+    intent.setData(Uri.parse(getString(R.string.special_order_for_mail_to) + getString(
+        R.string.special_order_for_email_example)));
+    intent.putExtra(android.content.Intent.EXTRA_SUBJECT,
+        getString(R.string.special_order_for_new_order) +
+            mProductNameEditText.getText().toString().trim());
+    String message = getString(R.string.special_order_for_mail_text) + " " +
+        mProductNameEditText.getText().toString().trim() + " " +
+        mQuantityEditText.getText().toString().trim() + " pcs., \n" +
+        getString(R.string.special_order_for_mail_text_1) + " " +
+        mPriceEditText.getText().toString().trim() + " $" +
+        "\n" + getString(R.string.special_order_for_mail_text_2) +
+        "\n" +
+        "\n" + getString(R.string.special_order_for_best_regards);
+    intent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+    startActivity(intent);
   }
 
   /**
@@ -362,6 +432,7 @@ public class EditorActivity extends AppCompatActivity
       int quantityLF = cursor.getInt(quantityColumnIndex);
       String supplierLF = cursor.getString(supplierColumnIndex);
       String phoneSupplierLF = cursor.getString(phoneColumnIndex);
+      mQuantity = quantityLF;
 
       /** Update the views on the screen with the values from the database*/
       mProductNameEditText.setText(nameLF);

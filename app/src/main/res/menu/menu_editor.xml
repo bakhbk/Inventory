@@ -8,10 +8,16 @@
       android:id="@+id/action_save"
       android:icon="@drawable/ic_done"
       android:title="@string/action_save"
-      app:showAsAction="always"/>
+      app:showAsAction="always"
+      tools:ignore="AlwaysShowAction"/>
 
   <item
       android:id="@+id/action_delete"
       android:title="@string/action_delete"
+      app:showAsAction="never"/>
+
+  <item
+      android:id="@+id/special_order"
+      android:title="@string/special_order"
       app:showAsAction="never"/>
 </menu>

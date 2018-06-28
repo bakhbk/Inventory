@@ -19,7 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import com.example.bakhbk.inventory.data.InventoryContract.InventoryEntry;
 
-public class InventoryActivity extends AppCompatActivity implements
+public class InventoryAppActivity extends AppCompatActivity implements
     LoaderManager.LoaderCallbacks<Cursor> {
 
   /** Identifier for the bookstore data loader */
@@ -38,7 +38,7 @@ public class InventoryActivity extends AppCompatActivity implements
     fab.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
-        Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
+        Intent intent = new Intent(InventoryAppActivity.this, EditorActivity.class);
         startActivity(intent);
       }
     });
@@ -60,7 +60,7 @@ public class InventoryActivity extends AppCompatActivity implements
       @Override
       public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
         /**Create new intent to go to {@link EditorActivity}*/
-        Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
+        Intent intent = new Intent(InventoryAppActivity.this, EditorActivity.class);
 
         /** Form the content URI that represents the specific book that was clicked on,
          by appending the "id" (passed as input to this method) onto the
@@ -107,7 +107,7 @@ public class InventoryActivity extends AppCompatActivity implements
    */
   private void deleteAllBooks() {
     int rowsDeleted = getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
-    Log.v("InventoryActivity", rowsDeleted + " rows deleted from pet database");
+    Log.v("InventoryAppActivity", rowsDeleted + " rows deleted from pet database");
   }
 
   @Override

@@ -47,5 +47,15 @@
   <string name="in_stock">In stock: </string>
   <string name="price_list_view">price</string>
   <string name="price_simbol">$</string>
+  <string name="special_order">Special Order</string>
 
+  <!--Strings for Intent to email-->
+  <string name="special_order_for_email_example">info@example.com</string>
+  <string name="special_order_for_mail_to">mailto:</string>
+  <string name="special_order_for_text_plain">text/plain</string>
+  <string name="special_order_for_new_order">New order:</string>
+  <string name="special_order_for_mail_text">We need to make a new special \norder of:</string>
+  <string name="special_order_for_mail_text_2">Please confirm that you can send to us</string>
+  <string name="special_order_for_mail_text_1">for the price of </string>
+  <string name="special_order_for_best_regards">Best regards,</string>
 </resources>
