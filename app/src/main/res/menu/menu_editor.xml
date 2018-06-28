@@ -20,4 +20,9 @@
       android:id="@+id/special_order"
       android:title="@string/special_order"
       app:showAsAction="never"/>
+
+  <item
+      android:id="@+id/call_the_store"
+      android:title="@string/call_the_store"
+      app:showAsAction="never"/>
 </menu>

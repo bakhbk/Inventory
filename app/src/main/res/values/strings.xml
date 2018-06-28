@@ -12,7 +12,7 @@
   <string name="supplier_name">Supplier Name</string>
   <string name="supplier_name_example">Banderas</string>
   <string name="supplier_phone_number">Supplier Phone Number</string>
-  <string name="supplier_phone_number_example">+18881002030</string>
+  <string name="supplier_phone_number_example">+78008008080</string>
 
   <!--Strings for menu_inventory.xml-->
   <string name="action_insert_dummy_data">Insert Dummy Data</string>
@@ -47,7 +47,7 @@
   <string name="in_stock">In stock: </string>
   <string name="price_list_view">price</string>
   <string name="price_simbol">$</string>
-  <string name="special_order">Special Order</string>
+  <string name="special_order">Special order</string>
 
   <!--Strings for Intent to email-->
   <string name="special_order_for_email_example">info@example.com</string>
@@ -58,4 +58,8 @@
   <string name="special_order_for_mail_text_2">Please confirm that you can send to us</string>
   <string name="special_order_for_mail_text_1">for the price of </string>
   <string name="special_order_for_best_regards">Best regards,</string>
+  <string name="call_the_store">Call the store</string>
+  <string name="toast_calls_permission">To make a call, we need access to the phone ;)</string>
+  <string name="empty_view_title_text">It\'s a bit lonely here...</string>
+  <string name="empty_view_subtitle_text">Get started by adding a book</string>
 </resources>

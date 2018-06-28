@@ -1,5 +1,6 @@
 package com.example.bakhbk.inventory;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.LoaderManager;
@@ -8,9 +9,11 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -52,6 +55,8 @@ public class EditorActivity extends AppCompatActivity
   private ImageButton mDecrementButton;
 
   private int mQuantity;
+
+  private static final int PERMISSION_REQUEST_CALL_PHONE = 0;
 
   /**
    * Boolean flag that keeps track of whether the book has been edited (true) or
@@ -309,9 +314,21 @@ public class EditorActivity extends AppCompatActivity
         showDeleteConfirmationDialog();
         return true;
 
-      // Respond to a click on the "Order more" menu option
+      // Respond to a click on the "Special Order" menu option
       case R.id.special_order:
         specialOrder();
+        return true;
+
+      // Respond to a click on the "Call the store" menu option
+      case R.id.call_the_store:
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE)
+            == PackageManager.PERMISSION_GRANTED) {
+          // Permission is already available, start callTheStore
+          callTheStore();
+        } else {
+          // Permission is missing and must be requested.
+          requestCallPermission();
+        }
         return true;
 
       /**Respond to a click on the "Up" arrow button in the app bar*/
@@ -341,13 +358,14 @@ public class EditorActivity extends AppCompatActivity
     return super.onOptionsItemSelected(item);
   }
 
+  /** Intent mailTo */
   public void specialOrder() {
     Intent intent = new Intent(android.content.Intent.ACTION_SENDTO);
     intent.setType(getString(R.string.special_order_for_text_plain));
     intent.setData(Uri.parse(getString(R.string.special_order_for_mail_to) + getString(
         R.string.special_order_for_email_example)));
     intent.putExtra(android.content.Intent.EXTRA_SUBJECT,
-        getString(R.string.special_order_for_new_order) +
+        getString(R.string.special_order_for_new_order) + " " +
             mProductNameEditText.getText().toString().trim());
     String message = getString(R.string.special_order_for_mail_text) + " " +
         mProductNameEditText.getText().toString().trim() + " " +
@@ -531,5 +549,29 @@ public class EditorActivity extends AppCompatActivity
 
     /** Close the activity*/
     finish();
+  }
+
+  /** Request Call permission for method callTheStore */
+  private void requestCallPermission() {
+    // Permission has not been granted and must be requested.
+    if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+        Manifest.permission.CALL_PHONE)) {
+      // Provide an additional rationale to the user if the permission was not granted
+      // and the user would benefit from additional context for the use of the permission.
+      Toast.makeText(this, R.string.toast_calls_permission, Toast.LENGTH_LONG).show();
+      ActivityCompat.requestPermissions(this,
+          new String[] { Manifest.permission.CALL_PHONE }, PERMISSION_REQUEST_CALL_PHONE);
+    } else {
+      ActivityCompat.requestPermissions(this,
+          new String[] { Manifest.permission.CALL_PHONE }, PERMISSION_REQUEST_CALL_PHONE);
+    }
+  }
+
+  /** Intent call the store */
+  public void callTheStore() {
+    Intent call = new Intent();
+    call.setAction(Intent.ACTION_CALL);
+    call.setData(Uri.parse("tel:" + mPhoneNumberEditText.getText().toString().trim()));
+    startActivity(call);
   }
 }
