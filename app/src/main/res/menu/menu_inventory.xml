@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".InventoryActivity">
 
-    <item
-        android:id="@+id/action_insert_dummy_data"
-        android:title="@string/action_insert_dummy_data"
-        app:showAsAction="never" />
+  <item
+      android:id="@+id/action_insert_dummy_data"
+      android:title="@string/action_insert_dummy_data"
+      app:showAsAction="never"/>
 
-    <item
-        android:id="@+id/action_delete_all_entries"
-        android:title="@string/action_delete_all_entries"
-        app:showAsAction="never" />
+  <item
+      android:id="@+id/action_delete_all_entries"
+      android:title="@string/action_delete_all_entries"
+      app:showAsAction="never"/>
 </menu>

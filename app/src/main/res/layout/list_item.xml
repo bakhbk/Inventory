@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_or_padding_8_dp"
+    >
+  <LinearLayout
+      android:layout_width="@dimen/layout_width_0_dp"
+      android:layout_height="wrap_content"
+      android:layout_weight="4"
+      android:orientation="vertical"
+      >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+      <TextView
+          android:id="@+id/name"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif-medium"
+          android:textAppearance="?android:textAppearanceMedium"
+          android:textColor="@android:color/black"
+          tools:targetApi="jelly_bean"
+          tools:text="Product name"
+          />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_or_padding_4_dp"
+        android:orientation="horizontal"
+        >
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="@dimen/margin_or_padding_8_dp"
+          android:layout_marginRight="@dimen/margin_or_padding_8_dp"
+          android:text="@string/in_stock"
+          />
+
+      <TextView
+          android:id="@+id/quantity"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:fontFamily="sans-serif"
+          android:textAppearance="?android:textAppearanceSmall"
+          tools:targetApi="jelly_bean"
+          tools:text="0"
+          />
+    </LinearLayout>
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:gravity="center"
+      android:orientation="vertical"
+      >
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textAlignment="center"
+        android:textAppearance="?android:textAppearanceLarge"
+        tools:targetApi="jelly_bean"
+        tools:text="0 $"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_or_padding_8_dp"
+        android:layout_marginRight="@dimen/margin_or_padding_8_dp"
+        android:text="@string/price_list_view"
+        android:textAlignment="center"
+        />
+
+  </LinearLayout>
+
+  <ImageButton
+      android:id="@+id/buy"
+      android:layout_width="@dimen/layout_width_0_dp"
+      android:layout_height="50dp"
+      android:layout_margin="@dimen/margin_or_padding_8_dp"
+      android:layout_weight="1"
+      android:background="@color/colorAccent"
+      android:contentDescription="@string/buy_button"
+      android:focusableInTouchMode="true"
+      android:gravity="center"
+      android:src="@drawable/ic_shopping_basket"
+      tools:targetApi="lollipop"
+      />
+</LinearLayout>

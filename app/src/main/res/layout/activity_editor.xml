@@ -4,99 +4,116 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/padding_activity_editor"
-    tools:context=".EditorActivity">
+    android:padding="@dimen/padding_16_dp"
+    tools:context=".EditorActivity"
+    >
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      >
+
+    <TextView
+        android:text="@string/product_name"
+        style="@style/EditorFieldStyleTextView"
+        />
+
+    <EditText
+        android:id="@+id/edit_product_name"
+        android:hint="@string/product_name_example_text"
+        android:inputType="textCapWords"
+        style="@style/EditorFieldStyleEditView"
+        />
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:baselineAligned="false"
+      android:orientation="horizontal"
+      >
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
 
-        <TextView
-            style="@style/EditorFieldStyleTextView"
-            android:text="@string/product_name" />
+      <TextView
+          android:text="@string/price"
+          style="@style/EditorFieldStyleTextView"
+          />
 
-        <EditText
-            android:id="@+id/edit_product_name"
-            style="@style/EditorFieldStyleEditView"
-            android:hint="@string/product_name_example_text"
-            android:inputType="textCapWords" />
+      <EditText
+          android:id="@+id/edit_price"
+          android:hint="@string/price_example"
+          android:inputType="number"
+          style="@style/EditorFieldStyleEditView"
+          />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+      <TextView
+          android:text="@string/quantity"
+          style="@style/EditorFieldStyleTextView"
+          />
 
-            <TextView
-                style="@style/EditorFieldStyleTextView"
-                android:text="@string/price" />
-
-            <EditText
-                android:id="@+id/edit_price"
-                style="@style/EditorFieldStyleEditView"
-                android:hint="@string/price_example"
-                android:inputType="number" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                style="@style/EditorFieldStyleTextView"
-                android:text="@string/quantity" />
-
-            <EditText
-                android:id="@+id/edit_quantity"
-                style="@style/EditorFieldStyleEditView"
-                android:hint="@string/quantity_example"
-                android:inputType="number" />
-        </LinearLayout>
-
+      <EditText
+          android:id="@+id/edit_quantity"
+          android:hint="@string/quantity_example"
+          android:inputType="number"
+          style="@style/EditorFieldStyleEditView"
+          />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+  </LinearLayout>
 
-        <TextView
-            style="@style/EditorFieldStyleTextView"
-            android:text="@string/supplier_name" />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      >
 
-        <EditText
-            android:id="@+id/edit_supplier_name"
-            style="@style/EditorFieldStyleEditView"
-            android:hint="@string/supplier_name_example"
-            android:inputType="textCapWords" />
-    </LinearLayout>
+    <TextView
+        android:text="@string/supplier_name"
+        style="@style/EditorFieldStyleTextView"
+        />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <EditText
+        android:id="@+id/edit_supplier_name"
+        android:hint="@string/supplier_name_example"
+        android:inputType="textCapWords"
+        style="@style/EditorFieldStyleEditView"
+        />
+  </LinearLayout>
 
-        <TextView
-            style="@style/EditorFieldStyleTextView"
-            android:text="@string/supplier_phone_number" />
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      >
 
-        <EditText
-            android:id="@+id/edit_supplier_phone_number"
-            style="@style/EditorFieldStyleEditView"
-            android:digits="0123456789+"
-            android:hint="@string/supplier_phone_number_example"
-            android:inputType="phone"
-            android:maxLength="12" />
-    </LinearLayout>
+    <TextView
+        android:text="@string/supplier_phone_number"
+        style="@style/EditorFieldStyleTextView"
+        />
+
+    <EditText
+        android:id="@+id/edit_supplier_phone_number"
+        android:digits="0123456789+"
+        android:hint="@string/supplier_phone_number_example"
+        android:inputType="phone"
+        android:maxLength="12"
+        style="@style/EditorFieldStyleEditView"
+        />
+  </LinearLayout>
 
 </LinearLayout>

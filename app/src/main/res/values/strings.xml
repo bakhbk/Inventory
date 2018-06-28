@@ -1,25 +1,51 @@
 <resources>
-    <string name="app_name">Inventory</string>
+  <string name="app_name">Inventory</string>
 
-    <!--Strings for activity_editor.xml-->
-    <string name="editor_activity_title_new_book">Add a Book</string>
-    <string name="product_name">Product name</string>
-    <string name="product_name_example_text">Adam Smith - The Wealth of Nations</string>
-    <string name="price">Price $</string>
-    <string name="price_example">10</string>
-    <string name="quantity">Quantity pcs.</string>
-    <string name="quantity_example">1</string>
-    <string name="supplier_name">Supplier Name</string>
-    <string name="supplier_name_example">Banderas</string>
-    <string name="supplier_phone_number">Supplier Phone Number</string>
-    <string name="supplier_phone_number_example">+18881002030</string>
+  <!--Strings for activity_editor.xml-->
+  <string name="editor_activity_title_new_book">Add a Book</string>
+  <string name="product_name">Product name</string>
+  <string name="product_name_example_text">Roosevelt by Brett Harper</string>
+  <string name="price">Price $</string>
+  <string name="price_example">10</string>
+  <string name="quantity">Quantity pcs.</string>
+  <string name="quantity_example">5</string>
+  <string name="supplier_name">Supplier Name</string>
+  <string name="supplier_name_example">Banderas</string>
+  <string name="supplier_phone_number">Supplier Phone Number</string>
+  <string name="supplier_phone_number_example">+18881002030</string>
 
-    <!--Strings for menu_inventory.xml-->
-    <string name="action_insert_dummy_data">Insert Dummy Data</string>
-    <string name="action_delete_all_entries">Delete All Pets</string>
+  <!--Strings for menu_inventory.xml-->
+  <string name="action_insert_dummy_data">Insert Dummy Data</string>
+  <string name="action_delete_all_entries">Delete All Pets</string>
 
-    <!--Strings for menu_editor.xml-->
-    <string name="action_save">Save</string>
-    <string name="action_delete">Delete</string>
+  <string name="action_save">Save</string>
+  <string name="action_delete">Delete</string>
+  <string name="unknown_price">The price Not added yet</string>
+  <string name="editor_activity_title_edit_book">Edit Book</string>
+  <string name="editor_insert_pet_failed">Error with saving book</string>
+  <string name="editor_insert_pet_successful">Book saved</string>
+  <string name="editor_update_pet_failed">Error with updating book</string>
+  <string name="editor_update_pet_successful">Book updated</string>
+  <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+  <string name="discard">Discard</string>
+  <string name="keep_editing">Keep Editing</string>
+  <string name="delete_dialog_msg">Delete this book</string>
+  <string name="delete">Delete</string>
+  <string name="cancel">Cancel</string>
+  <string name="editor_delete_pet_failed">Error with deleting book</string>
+  <string name="editor_delete_pet_successful">Book deleted</string>
+  <string name="enter_the_name_of_the_product">Enter the name of the product</string>
+  <string name="enter_the_price_of_the_product">Enter the price of the product</string>
+  <string name="enter_the_quantity_of_the_product">Enter the quantity of the product</string>
+  <string name="enter_the_supplier_name">Enter the supplier name</string>
+  <string name="enter_the_supplier_phone_number">Enter the supplier phone number</string>
+  <string name="out_of_stock_msg">Product is out of stock</string>
+  <string name="no_product_in_stock">No available book in stock</string>
+  <string name="buy_massage_confirm">Item has been sold</string>
+  <string name="error_massage_stock_update">Issue with upload value of quantity</string>
+  <string name="buy_button">Buy button</string>
+  <string name="in_stock">In stock: </string>
+  <string name="price_list_view">price</string>
+  <string name="price_simbol">$</string>
 
 </resources>

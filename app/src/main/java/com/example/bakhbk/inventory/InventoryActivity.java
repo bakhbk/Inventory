@@ -1,178 +1,167 @@
 package com.example.bakhbk.inventory;
 
+import android.app.LoaderManager;
+import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-
+import android.widget.AdapterView;
+import android.widget.ListView;
 import com.example.bakhbk.inventory.data.InventoryContract.InventoryEntry;
-import com.example.bakhbk.inventory.data.InventoryDbHelper;
 
-public class InventoryActivity extends AppCompatActivity {
-    // Database helper that will provide us access to the database
-    private InventoryDbHelper mDbHelper;
+public class InventoryActivity extends AppCompatActivity implements
+    LoaderManager.LoaderCallbacks<Cursor> {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inventory);
+  /** Identifier for the bookstore data loader */
+  private static final int INVENTORY_LOADER = 0;
 
-        // Setup FAB to open EditorActivity
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
-                startActivity(intent);
-            }
-        });
+  /** Adapter for the ListView */
+  InventoryCursorAdapter mCursorAdapter;
 
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        mDbHelper = new InventoryDbHelper(this);
-        displayDatabaseInfo();
-    }
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_inventory);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        displayDatabaseInfo();
-    }
+    /** Setup FAB to open EditorActivity*/
+    FloatingActionButton fab = findViewById(R.id.fab);
+    fab.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
+        startActivity(intent);
+      }
+    });
 
-    // Temporary helper method to display information in the onscreen TextView about the state of
-    // the books database.
-    private void displayDatabaseInfo() {
-        // To access our database, we instantiate our subclass of SQLiteOpenHelper
-        // and pass the context, which is the current activity.
-        InventoryDbHelper mDbHelper = new InventoryDbHelper(this);
+    /** Find the ListView which will be populated with the pet data*/
+    ListView petListView = findViewById(R.id.list);
 
-        // Create and/or open a database to read from it
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+    /**Find and set empty view on the ListView, so that it only shows when the list has 0 items.*/
+    View emptyView = findViewById(R.id.empty_view);
+    petListView.setEmptyView(emptyView);
 
-        String[] projection = {
-                InventoryEntry._ID,
-                InventoryEntry.COLUMN_PRODUCT_NAME,
-                InventoryEntry.COLUMN_PRICE,
-                InventoryEntry.COLUMN_QUANTITY,
-                InventoryEntry.COLUMN_SUPPLIER,
-                InventoryEntry.COLUMN_PHONE_NUMBER
-        };
+    /** Setup an Adapter to create a list item for each row of pet data in the Cursor.
+     * There is no pet data yet (until the loader finishes) so pass in null for the Cursor.*/
+    mCursorAdapter = new InventoryCursorAdapter(this, null);
+    petListView.setAdapter(mCursorAdapter);
 
-        Cursor cursor = db.query(
-                InventoryEntry.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
+    /**Setup the item click listener*/
+    petListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+      @Override
+      public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        /**Create new intent to go to {@link EditorActivity}*/
+        Intent intent = new Intent(InventoryActivity.this, EditorActivity.class);
 
-        TextView displayView = findViewById(R.id.text_view_pet);
+        /** Form the content URI that represents the specific book that was clicked on,
+         by appending the "id" (passed as input to this method) onto the
+         {@link InventoryEntry#CONTENT_URI}.
+         For example, the URI would be "content://com.example.bakhbk.inventory.data/bookstore/2"
+         if the pet with ID 2 was clicked on.*/
+        Uri currentBookUri = ContentUris.withAppendedId(InventoryEntry.CONTENT_URI, id);
 
-        try {
-            // Create a header in the Text View that looks like this:
-            //
-            // The bookstore table contains <number of rows in Cursor> books.
-            // _id - name - price - quantity - supplier - phone
-            //
-            // In the while loop below, iterate through the rows of the cursor and display
-            // the information from each column in this order.
-            displayView.setText("The bookstore table contains " + cursor.getCount() + " book(s).\n\n");
-            displayView.append(InventoryEntry._ID + " - " +
-                    InventoryEntry.COLUMN_PRODUCT_NAME + " - " +
-                    InventoryEntry.COLUMN_PRICE + " - " +
-                    InventoryEntry.COLUMN_QUANTITY + " - " +
-                    InventoryEntry.COLUMN_SUPPLIER + " - " +
-                    InventoryEntry.COLUMN_PHONE_NUMBER + "\n");
+        /** Set the URI on the data field of the intent*/
+        intent.setData(currentBookUri);
 
-            // Figure out the index of each column
-            int idColumnIndex = cursor.getColumnIndex(InventoryEntry._ID);
-            int nameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRODUCT_NAME);
-            int priceColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PRICE);
-            int quantityColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_QUANTITY);
-            int supplierNameColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_SUPPLIER);
-            int phoneNumberColumnIndex = cursor.getColumnIndex(InventoryEntry.COLUMN_PHONE_NUMBER);
+        /**Launch the {@link EditorActivity} to display the data for the current pet.*/
+        startActivity(intent);
+      }
+    });
 
-            // Iterate through all the returned rows in the cursor
-            while (cursor.moveToNext()) {
-                // Use that index to extract the String or Int value of the word
-                // at the current row the cursor is on.
-                int currentID = cursor.getInt(idColumnIndex);
-                String currentName = cursor.getString(nameColumnIndex);
-                int currentPrice = cursor.getInt(priceColumnIndex);
-                int currentQuantity = cursor.getInt(quantityColumnIndex);
-                String currentSupplierName = cursor.getString(supplierNameColumnIndex);
-                String currentPhoneNumber = cursor.getString(phoneNumberColumnIndex);
-                // Display the values from each column of the current row in the cursor in the TextView
-                displayView.append(("\n" + currentID + " - " +
-                        currentName + " - " +
-                        currentPrice + " - " +
-                        currentQuantity + " - " +
-                        currentSupplierName + " - " +
-                        currentPhoneNumber));
-            }
-        } finally {
-            // Always close the cursor when you're done reading from it. This releases all its
-            // resources and makes it invalid.
-            cursor.close();
-        }
-    }
+    /**Kick off the loader*/
+    getLoaderManager().initLoader(INVENTORY_LOADER, null, this);
+  }
 
+  /**
+   * Helper method to insert hardcoded pet data into the database. For debugging purposes only.
+   */
+  private void insertBook() {
+    /** Create a ContentValues object where column names are the keys,
+     * and Toto's pet attributes are the values.*/
+    ContentValues values = new ContentValues();
+    values.put(InventoryEntry.COLUMN_PRODUCT_NAME, getString(R.string.product_name_example_text));
+    values.put(InventoryEntry.COLUMN_PRICE, getString(R.string.price_example));
+    values.put(InventoryEntry.COLUMN_QUANTITY, getString(R.string.quantity_example));
+    values.put(InventoryEntry.COLUMN_SUPPLIER, getString(R.string.supplier_name_example));
+    values.put(InventoryEntry.COLUMN_PHONE_NUMBER,
+        getString(R.string.supplier_phone_number_example));
 
-    // Helper method to insert hardcoded book data into the database. For debugging purposes only.
-    private void insertBook() {
-        // Gets the database in write mode
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+    /**Insert a new row for Toto into the provider using the ContentResolver.
+     Use the {@link InventoryEntry#CONTENT_URI} to indicate that we want to insert
+     into the bookstore database table.
+     Receive the new content URI that will allow us to access Toto's data in the future.*/
+    Uri newUri = getContentResolver().insert(InventoryEntry.CONTENT_URI, values);
+  }
 
-        // Create a ContentValues object where column names are the keys,
-        // and Adam Smith book attributes are the values.
-        ContentValues values = new ContentValues();
-        values.put(InventoryEntry.COLUMN_PRODUCT_NAME, "Adam Smith");
-        values.put(InventoryEntry.COLUMN_PRICE, 10);
-        values.put(InventoryEntry.COLUMN_QUANTITY, 2);
-        values.put(InventoryEntry.COLUMN_SUPPLIER, "Banderas");
-        values.put(InventoryEntry.COLUMN_PHONE_NUMBER, "+18881002030");
+  /**
+   * Helper method to delete all bookstore in the database.
+   */
+  private void deleteAllBooks() {
+    int rowsDeleted = getContentResolver().delete(InventoryEntry.CONTENT_URI, null, null);
+    Log.v("InventoryActivity", rowsDeleted + " rows deleted from pet database");
+  }
 
-        // Insert a new row for Adam Smith in the database, returning the ID of that new row.
-        // The first argument for db.insert() is the bookstore table name.
-        // The second argument provides the name of a column in which the framework
-        // can insert NULL in the event that the ContentValues is empty (if
-        // this is set to "null", then the framework will not insert a row when
-        // there are no values).
-        // The third argument is the ContentValues object containing the info for book Adam Smith.
-        long newRowId = db.insert(InventoryEntry.TABLE_NAME, null, values);
-    }
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    /** Inflate the menu options from the res/menu/menu_inventory.xml file.
+     * This adds menu items to the app bar.*/
+    getMenuInflater().inflate(R.menu.menu_inventory, menu);
+    return true;
+  }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_catalog.xml file.
-        // This adds menu items to the app bar.
-        getMenuInflater().inflate(R.menu.menu_inventory, menu);
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    /** User clicked on a menu option in the app bar overflow menu*/
+    switch (item.getItemId()) {
+      /**Respond to a click on the "Insert dummy data" menu option*/
+      case R.id.action_insert_dummy_data:
+        insertBook();
+        return true;
+      /**Respond to a click on the "Delete all entries" menu option*/
+      case R.id.action_delete_all_entries:
+        deleteAllBooks();
         return true;
     }
+    return super.onOptionsItemSelected(item);
+  }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // User clicked on a menu option in the app bar overflow menu
-        switch (item.getItemId()) {
-            // Respond to a click on the "Insert dummy data" menu option
-            case R.id.action_insert_dummy_data:
-                insertBook();
-                displayDatabaseInfo();
-                return true;
-            // Respond to a click on the "Delete all entries" menu option
-            case R.id.action_delete_all_entries:
-                // Do nothing for now
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+  @Override
+  public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
+    /**Define a projection that specifies the columns from the table we care about.*/
+    String[] projection = {
+        InventoryEntry._ID,
+        InventoryEntry.COLUMN_PRODUCT_NAME,
+        InventoryEntry.COLUMN_PRICE,
+        InventoryEntry.COLUMN_QUANTITY
+    };
+
+    /**This loader will execute the ContentProvider's query method on a background thread*/
+    return new CursorLoader(this,   /** Parent activity context*/
+        InventoryEntry.CONTENT_URI,         /** Provider content URI to query*/
+        projection,                         /** Columns to include in the resulting Cursor*/
+        null,                      /** No selection clause*/
+        null,                   /** No selection arguments*/
+        null);                    /** Default sort order*/
+  }
+
+  @Override
+  public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+    /** Update {@link PetCursorAdapter} with this new cursor containing updated book data*/
+    mCursorAdapter.swapCursor(data);
+  }
+
+  @Override
+  public void onLoaderReset(Loader<Cursor> loader) {
+    /** Callback called when the data needs to be deleted*/
+    mCursorAdapter.swapCursor(null);
+  }
 }
